@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "648461418628",
+    "firebase_url": "https://maydayfirebase-5e45a.firebaseio.com",
+    "project_id": "maydayfirebase-5e45a",
+    "storage_bucket": "maydayfirebase-5e45a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648461418628:android:370c0c0056f84f2ad982d1",
+        "android_client_info": {
+          "package_name": "fr.ominga.mayday_firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648461418628-0dt2l4lposc9pjnm0cjijc7mjkq73no5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fr.ominga.mayday_firebase",
+            "certificate_hash": "f7a4c9c1fe32bb9c8b381bd8b0ac687eeee861b0"
+          }
+        },
+        {
+          "client_id": "648461418628-5n98btm56uqqqhro9tm8fbi9ikmguplm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAy81CWZGpjgSNtm9PyOVwsImT5zpU5FQs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648461418628-5n98btm56uqqqhro9tm8fbi9ikmguplm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
