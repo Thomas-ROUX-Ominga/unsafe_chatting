@@ -11,7 +11,7 @@
     <string name="create_a_new_account">Create a New Account</string>
     <string name="login_to_your_account">Login to Your Account</string>
     <string name="login">Login</string>
-    <string name="welcome_to_mayday">Welcome to MayDay</string>
+    <string name="unsafe_chatting">Unsafe Chatting</string>
     <string name="doctor">Doctor</string>
     <string name="status">Status</string>
     <string name="enter_message">Enter Message...</string>
