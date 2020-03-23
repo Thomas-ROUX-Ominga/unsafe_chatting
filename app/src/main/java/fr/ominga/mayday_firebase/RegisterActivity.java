@@ -99,10 +99,8 @@ public class RegisterActivity extends AppCompatActivity {
                                 .addConverterFactory(GsonConverterFactory.create())
                                 .build();
 
-                        service = retrofit.create();
 
                         String id = Integer.toString((int) Math.random() * (807 - 1));
-                        launchsearch(id);
 
                         /*-----------------*/
 
@@ -135,24 +133,5 @@ public class RegisterActivity extends AppCompatActivity {
 
                 }
             });
-    }
-
-    private void launchsearch(String id) {
-        service.search(query, API_KEY).enqueue(new Callback<YouTubeSearchResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<YouTubeSearchResponse> call, @NonNull Response<YouTubeSearchResponse> response) {
-                Log.d(TAG, "onResponse");
-                if (response.isSuccessful()) {
-                    YouTubeSearchResponse youTubeSearchResponse = response.body();
-                    List<YouTubeSearchItem> itemList = youTubeSearchResponse.getItems();
-                    recyclerView.setAdapter(new YouTubeSearchItemAdapter(itemList));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<YouTubeSearchResponse> call, Throwable t) {
-                Log.e(TAG, "onFailure", t);
-            }
-        });
     }
 }
