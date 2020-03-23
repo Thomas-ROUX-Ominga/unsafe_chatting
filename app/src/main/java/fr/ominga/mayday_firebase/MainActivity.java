@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -25,7 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-import javax.security.auth.callback.CallbackHandler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -71,7 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void startListening() {
 
-        Query query = FirebaseDatabase.getInstance().getReference().child("Users");
+        mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid()).child("status");
+        mUsersDatabase.setValue("true");
+
+        Query query = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("status").equalTo("false");
 
         FirebaseRecyclerOptions<Users> options = new FirebaseRecyclerOptions.Builder<Users>().setQuery(query, Users.class).build();
 
@@ -80,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
             protected void onBindViewHolder(UserViewHolder holder, int position, final Users model) {
 
                 holder.setName(model.name);
-                holder.setStatus(model.status);
 
                 final String recipent_id = getRef(position).getKey();
 
@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                             Intent chatIntent = new Intent(MainActivity.this, ChatActivity.class);
                             chatIntent.putExtra("recipent_id", recipent_id);
                             chatIntent.putExtra("recipent_name", model.name);
-                            chatIntent.putExtra("recipent_status", model.status);
                             startActivity(chatIntent);
 
                         }
@@ -121,10 +120,6 @@ public class MainActivity extends AppCompatActivity {
             TextView userNameView = (TextView) mView.findViewById(R.id.user_single_name);
             userNameView.setText(name);
         }
-        public void setStatus(String status) {
-            TextView userNameView = (TextView) mView.findViewById(R.id.user_single_status);
-            userNameView.setText(status);
-        }
     }
 
     private void sendToStart() {
@@ -147,6 +142,9 @@ public class MainActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
 
         if(item.getItemId() == R.id.main_logout_but){
+            mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid()).child("status");
+            mUsersDatabase.setValue("false");
+
             FirebaseAuth.getInstance().signOut();
             sendToStart();
         }

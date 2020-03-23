@@ -23,13 +23,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.Console;
 import java.util.HashMap;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private CheckBox mBox;
-    private String status = "Youth"; // Need to be global variable
     private TextInputLayout mDisplayName;
     private TextInputLayout mEmail;
     private TextInputLayout mPassword;
@@ -48,7 +49,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        mBox = (CheckBox) findViewById(R.id.reg_doc);
         mDisplayName = (TextInputLayout) findViewById(R.id.reg_display_name);
         mEmail = (TextInputLayout) findViewById(R.id.reg_email);
         mPassword = (TextInputLayout) findViewById(R.id.reg_password);
@@ -62,19 +62,6 @@ public class RegisterActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRegProgress = new ProgressDialog(this);
-
-        mBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mBox.isChecked()){
-                    status = "Doctor";
-                }
-                else{
-                    status = "Youth";
-                }
-
-            }
-        });
 
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +92,20 @@ public class RegisterActivity extends AppCompatActivity {
 
                     if (task.isSuccessful()) {
 
+                        /* POKEMON REQUEST */
+
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl("https://pokeapi.co/api/v2/")
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+
+                        service = retrofit.create();
+
+                        String id = Integer.toString((int) Math.random() * (807 - 1));
+                        launchsearch(id);
+
+                        /*-----------------*/
+
                         FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
                         String uid = current_user.getUid();
 
@@ -112,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                         HashMap<String, String> userMap = new HashMap<>();
                         userMap.put("name", name);
-                        userMap.put("status", status);
+                        userMap.put("status", "false");
 
                         mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -122,6 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
                                     startActivity(mainIntent);
                                     finish();
+
                                 }
                             }
                         });
@@ -133,5 +135,24 @@ public class RegisterActivity extends AppCompatActivity {
 
                 }
             });
+    }
+
+    private void launchsearch(String id) {
+        service.search(query, API_KEY).enqueue(new Callback<YouTubeSearchResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<YouTubeSearchResponse> call, @NonNull Response<YouTubeSearchResponse> response) {
+                Log.d(TAG, "onResponse");
+                if (response.isSuccessful()) {
+                    YouTubeSearchResponse youTubeSearchResponse = response.body();
+                    List<YouTubeSearchItem> itemList = youTubeSearchResponse.getItems();
+                    recyclerView.setAdapter(new YouTubeSearchItemAdapter(itemList));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<YouTubeSearchResponse> call, Throwable t) {
+                Log.e(TAG, "onFailure", t);
+            }
+        });
     }
 }
