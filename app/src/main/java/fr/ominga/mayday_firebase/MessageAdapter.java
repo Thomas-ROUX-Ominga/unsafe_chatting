@@ -4,30 +4,24 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> implements Filterable {
 
     private List<Messages> mMessageList;
+    //private List<Messages> mMessageListFull;
+
     private FirebaseAuth mAuth;
-
-    public MessageAdapter(List<Messages> mMessageList){
-        this.mMessageList = mMessageList;
-    }
-
-    @Override
-    public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_single_layout, parent, false);
-
-        return new MessageViewHolder(v);
-    }
 
     public class MessageViewHolder extends RecyclerView.ViewHolder{
 
@@ -38,6 +32,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
             messageText = (TextView) view.findViewById(R.id.message_text_layout);
         }
+    }
+
+    MessageAdapter(List<Messages> mMessageList){
+        this.mMessageList = mMessageList;
+        //this.mMessageListFull = new ArrayList<>(mMessageList);
+    }
+
+    @Override
+    public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_single_layout, parent, false);
+
+        return new MessageViewHolder(v);
     }
 
     @Override
@@ -60,4 +67,40 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public int getItemCount(){
         return mMessageList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return messageFilter;
+    }
+
+    private Filter messageFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Messages> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(mMessageList);
+            }
+            else{
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (Messages message : mMessageList){
+                    if (message.getMessage().toLowerCase().contains(filterPattern)){
+                        filteredList.add(message);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mMessageList.clear();
+            mMessageList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }

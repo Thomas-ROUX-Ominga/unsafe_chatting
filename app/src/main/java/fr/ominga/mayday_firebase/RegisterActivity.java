@@ -92,17 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     if (task.isSuccessful()) {
 
-                        /* POKEMON REQUEST */
 
-                        Retrofit retrofit = new Retrofit.Builder()
-                                .baseUrl("https://pokeapi.co/api/v2/")
-                                .addConverterFactory(GsonConverterFactory.create())
-                                .build();
-
-
-                        String id = Integer.toString((int) Math.random() * (807 - 1));
-
-                        /*-----------------*/
 
                         FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
                         String uid = current_user.getUid();
@@ -118,7 +108,7 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     mRegProgress.dismiss();
-                                    Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                                    Intent mainIntent = new Intent(RegisterActivity.this, UsersFragment.class);
                                     startActivity(mainIntent);
                                     finish();
 
