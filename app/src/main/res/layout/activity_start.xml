@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,28 +11,30 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="97dp"
-        android:layout_marginTop="180dp"
-        android:text="@string/welcome_to_mayday"
-        android:textColor="@android:color/black"
-        android:textSize="24sp" />
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/montserrat_alternates_bold"
+        android:text="@string/unsafe_chatting"
+        android:textColor="@color/colorWhite"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/start_reg_button"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="38dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginTop="50dp"
         android:background="@color/colorAccent"
+        android:fontFamily="@font/montserrat_alternates"
         android:text="@string/need_a_new_account"
-        android:textColor="@android:color/white" />
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start_log_button" />
 
     <Button
         android:id="@+id/start_log_button"
@@ -40,8 +42,22 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/start_reg_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="31dp"
-        android:background="@android:color/white"
+        android:layout_marginTop="100dp"
+        android:background="@color/colorWhite"
+        android:fontFamily="@font/montserrat_alternates"
         android:text="@string/login"
-        android:textColor="@color/colorPrimary" />
-</RelativeLayout>
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/start_log_button"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/logo_esilv" />
+</androidx.constraintlayout.widget.ConstraintLayout>

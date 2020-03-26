@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +14,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -61,7 +66,13 @@ public class ChatActivity extends AppCompatActivity {
 
         mChatToolbar = (Toolbar) findViewById(R.id.chat_app_bar);
         setSupportActionBar(mChatToolbar);
-        getSupportActionBar().setTitle(userName + " (" + userStatus + ")");
+        if(userStatus == "true")
+        {
+            getSupportActionBar().setTitle(userName + " ( online )");
+        }
+        else{
+            getSupportActionBar().setTitle(userName + " ( offline )");
+        }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRootRef = FirebaseDatabase.getInstance().getReference();
@@ -166,5 +177,31 @@ public class ChatActivity extends AppCompatActivity {
 
 
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        menu.getItem(1).setVisible(false);
+
+        MenuItem searchMessage = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) searchMessage.getActionView();
+
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return true;
     }
 }

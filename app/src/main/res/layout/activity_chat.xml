@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     tools:context=".ChatActivity">
 
     <include layout="@layout/app_bar_layout" android:id="@+id/chat_app_bar"/>
@@ -34,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@android:color/white"
+        android:background="@color/colorWhiteDark"
         android:orientation="horizontal"
         android:weightSum="10">
 
@@ -43,10 +44,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="8"
-            android:background="@android:color/white"
+            android:background="@color/colorWhiteDark"
             android:ems="10"
             android:hint="@string/enter_message"
             android:inputType="textPersonName"
+            android:fontFamily="@font/montserrat_alternates"
             android:paddingBottom="12dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -58,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:alpha="1"
-            android:background="#00FFFFFF"
+            android:background="@color/colorWhiteDark"
             android:padding="10dp"
             app:srcCompat="@drawable/ic_send" />
 
